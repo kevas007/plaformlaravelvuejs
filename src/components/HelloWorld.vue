@@ -167,10 +167,9 @@ export default {
       formdata.append('email_de_la_personne_de_contact', this.entreprise.email)
       formdata.append('nom_de_la_personne_de_contact', this.entreprise.noms)
       formdata.append('numero_de_la_personne_de_contact', this.entreprise.contact)
-     this.$store.dispatch('setEntreprise',formdata)
+    this.$store.dispatch('setEntreprise',formdata)
       this.$router.push('/dashboard')
     },
-  
   },
 }
 </script>

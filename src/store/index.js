@@ -49,16 +49,17 @@ export default new Vuex.Store({
     }) {
       let toast = Vue.$toast;
       console.log(state.user);
-      axios.post('http://127.0.0.1:8000/api/logout', {}, {
+      axios.post('http://127.0.0.1:8000/api/out',{}, {
           headers: {
             'Authorization': 'Bearer ' + state.token
           }
         })
         .then(response => {
-          console.log(response);
+          console.log(response + 'logout');
           commit('setToken', null);
           commit('SetUser', null);
           commit('setCount', null);
+          // localStorage.clear();
           toast.success(`${response.data.message}`, {
             position: 'top-right',
             duration: 2000,

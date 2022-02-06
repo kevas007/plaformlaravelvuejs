@@ -65,7 +65,8 @@ const routes = [{
     path: '/messages',
     name: 'Messages',
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresFinish: true
     },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

@@ -102,13 +102,13 @@
                                     </v-dialog>
                                     <!-- <v-btn block @click="logout">Profile</v-btn> -->
                                 </v-list-item-title>
-                                <v-btn block @click="logout">Logout</v-btn>
                                 <v-list-item-title></v-list-item-title>
                                 <!-- </v-list-ite> -->
                             </v-list>
                         </v-menu>
                     </div>
                 </v-row>
+                <v-btn class="mt-2 pa-1 red" block @click="logout">Logout</v-btn>
             </template>
         </v-navigation-drawer>
     </v-card>

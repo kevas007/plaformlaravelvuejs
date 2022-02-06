@@ -1,27 +1,27 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-navigation-drawer v-if="getToken !=null" permanent v-model="drawer" app>
-        <Siderbar if="getUsers !=null"/>
+      <v-navigation-drawer v-if="getToken != null" permanent v-model="drawer" app>
+        <Siderbar if="getUsers !=null" />
         <!-- <Siderbar/> -->
       </v-navigation-drawer>
 
       <v-app-bar app>
         <!-- <v-app-bar-nav-icon v-if="getToken !=null" @click="drawer = !drawer"></v-app-bar-nav-icon> -->
 
-          <v-layout row justify-space-between>
-            <v-toolbar-title>Moshop</v-toolbar-title>
+        <v-layout row justify-space-between>
+          <v-toolbar-title>Moshop</v-toolbar-title>
 
-          <v-flex v-if="getToken ==null" md3>
+          <v-flex v-if="getToken == null" md3>
             <v-btn to="/login">login</v-btn>
             <v-btn to="/register">Register</v-btn>
             <!-- <router-link to="/login">Login</router-link>
             <router-link to="/register">Register</router-link>-->
           </v-flex>
-          <v-flex v-if="getToken !=null" md3>
+          <v-flex v-if="getToken != null" md3>
             <v-btn to="/dashboard">Dashbord</v-btn>
           </v-flex>
-          </v-layout >
+        </v-layout>
       </v-app-bar>
 
       <v-main>
@@ -40,6 +40,8 @@ import "vue-toastification/dist/index.css";
 // import axios from "axios"
 import { mapGetters } from 'vuex'
 import Siderbar from "./components/Siderbar.vue";
+import Echo from "laravel-echo";
+
 
 Vue.use(Toast, {
   transition: "Vue-Toastification__bounce",
@@ -50,10 +52,73 @@ Vue.use(Toast, {
 export default {
   data: () => ({ drawer: null }),
   components: { Siderbar },
+  mounted() {
 
-computed:{
+    if (this.getUsers != null) {
+        let toast = Vue.$toast;
+      // axios.get('http://127.0.0.1:8000/api/notif', {
+      //     headers: {
+      //       'Authorization': 'Bearer ' + this.getToken
+      //     }
+      //   })
+      //   .then(response => {
+      //     console.log(response.data);
+      //     toast.success(`${response.data.message}`, {
+      //       position: 'top-right',
+      //       duration: 2000,
+      //       dismissible: true
+      //     })
+      //   })
+      
+      // ;
+      let echo = new Echo({
+        broadcaster: "pusher",
+        key: "local",
+        wsHost: "127.0.0.1",
+        wsPort: 6001,
+        wssPort: 6001,
+        forceTLS: false,
+        cluster: 'mt1',
+        disableStats: true,
+        authEndpoint: "http://127.0.0.1:8000/api/broadcasting/auth",
+        auth: {
+          headers: {
+            'Authorization': "Bearer " + this.getToken
+          }
+        }
+      });
+    
+      echo
+        .private(`App.Models.User.${this.getUsers.id}`)
+        .notification((msg) => {
+           console.log(msg);
+   
+            toast.success(`${msg.message}`, {
+            position: 'top-right',
+            duration: 2000,
+            dismissible: true
+          });
+        
+         
+      });
+        // echo
+        // .private(`App.Models.User.${this.getUsers.id}`)  
+        // .listen('Todos',(msg) => {
+        //   toast.success(`${msg.message}`, {
+        //     position: 'top-right',
+        //     duration: 2000,
+        //     dismissible: true
+        //   });
+        //   console.log(msg);
+        // });
+
+
+    }
+
+  },
+  computed: {
     ...mapGetters([
-    'getToken','getUsers'
+      'getToken', 'getUsers'
     ])
   }
 }
