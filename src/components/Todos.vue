@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="getTodos != null">
+        <div v-if="getTodos.length >0">
             <v-container class="mt-10">
                 <div class="row">
                     <Todo  v-for="item in  getTodos" :key="item.id"  :todos="item"></Todo>
@@ -8,7 +8,7 @@
             </v-container>
         </div>
         <div v-else>
-            <p>Aucune tâche</p>
+            <p class="mt-10 text-center accent-2 mdi-leaf-circle">Aucune tâche</p>
         </div>
     </div>
 </template>

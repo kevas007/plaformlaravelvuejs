@@ -55,22 +55,9 @@ export default {
   mounted() {
 
     if (this.getUsers != null) {
-        let toast = Vue.$toast;
-      // axios.get('http://127.0.0.1:8000/api/notif', {
-      //     headers: {
-      //       'Authorization': 'Bearer ' + this.getToken
-      //     }
-      //   })
-      //   .then(response => {
-      //     console.log(response.data);
-      //     toast.success(`${response.data.message}`, {
-      //       position: 'top-right',
-      //       duration: 2000,
-      //       dismissible: true
-      //     })
-      //   })
-      
-      // ;
+
+      //configuration de l'echo pour le websocket
+      let toast = Vue.$toast;
       let echo = new Echo({
         broadcaster: "pusher",
         key: "local",
@@ -87,32 +74,19 @@ export default {
           }
         }
       });
-    
+  //initialisation des websocket 
       echo
         .private(`App.Models.User.${this.getUsers.id}`)
         .notification((msg) => {
-           console.log(msg);
-   
-            toast.success(`${msg.message}`, {
+          console.log(msg);
+
+          toast.success(`${msg.message}`, {
             position: 'top-right',
             duration: 2000,
             dismissible: true
           });
-        
-         
-      });
-        // echo
-        // .private(`App.Models.User.${this.getUsers.id}`)  
-        // .listen('Todos',(msg) => {
-        //   toast.success(`${msg.message}`, {
-        //     position: 'top-right',
-        //     duration: 2000,
-        //     dismissible: true
-        //   });
-        //   console.log(msg);
-        // });
-
-
+        });
+ 
     }
 
   },

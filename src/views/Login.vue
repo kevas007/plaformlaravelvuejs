@@ -38,6 +38,7 @@
 
 <script>
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 export default {
     name: 'Login',
     data: () => ({
@@ -66,10 +67,9 @@ export default {
                         this.$store.dispatch('userConnected', res.data);
                         // this.$store.dispatch('getUser');
                         this.succes.push(res.data.message)
+
+                        this.$toast.info("Bienvenue " + this.getUsers.name);
                         rout.push('/dashboard');
-                    }
-                    else {
-                        console.log('errur')
                     }
                 })
                 .catch(err => {
@@ -82,6 +82,9 @@ export default {
 
                 })
         }
+    },
+    computed: {
+        ...mapGetters(['getUsers', 'getToken'])
     }
 };
 </script>

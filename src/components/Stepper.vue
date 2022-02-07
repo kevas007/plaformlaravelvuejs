@@ -12,10 +12,10 @@
       <v-stepper-content step="1">
         <v-card class="mb-12" color="grey lighten-1" height="115vh">
           <v-container>
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form ref="form"  lazy-validation>
               <v-row>
                 <v-col cols="6" sm="8">
-                  <v-text-field label="TVA" v-model="entreprise.tva"></v-text-field>
+                  <v-text-field :rules="tvaRules"  label="TVA" type="number" v-model="entreprise.tva"></v-text-field>
                 </v-col>
                 <v-col cols="4" sm="4">
                   <v-btn @click="tavCheck">
@@ -25,29 +25,29 @@
                 <v-col cols="6" sm="8">
                   <v-text-field
                     v-model="entreprise.nom"
-                    :rules="nameRules"
+                    :rules="entrepriseRules"
                     label="Nom de l'entreprise"
                     required
                   ></v-text-field>
                 </v-col>
                 <v-col cols="6" sm="8">
-                  <v-text-field v-model="entreprise.activite" label="Activite" required></v-text-field>
+                  <v-text-field v-model="entreprise.activite" :rules="activiteRules" label="Activite" required></v-text-field>
                 </v-col>
                 <v-col cols="6" sm="8">
-                  <v-text-field v-model="entreprise.adresse" label="adresse" required></v-text-field>
+                  <v-text-field v-model="entreprise.adresse" :rules="adresseRules" label="adresse" required></v-text-field>
                 </v-col>
                 <v-col cols="6" sm="8">
-                  <v-text-field v-model="entreprise.ville" label="Ville" required></v-text-field>
+                  <v-text-field v-model="entreprise.ville"  :rules="villeRules"  label="Ville" required></v-text-field>
                 </v-col>
 
                 <v-col cols="6" sm="8">
-                  <v-text-field v-model="entreprise.pays" label="Pays" required></v-text-field>
+                  <v-text-field v-model="entreprise.pays"  :rules="paysRules" label="Pays" required></v-text-field>
                 </v-col>
                 <v-col cols="6" sm="8">
-                  <v-text-field v-model="entreprise.code_postal" label="Code Postal" required></v-text-field>
+                  <v-text-field v-model="entreprise.code_postal"  :rules="codeRules" label="Code Postal" required></v-text-field>
                 </v-col>
                 <v-col cols="6" sm="8">
-                  <v-text-field label="Numero fixe" v-model="entreprise.numero" required></v-text-field>
+                  <v-text-field label="Numero fixe" type="number" :rules="phoneRules" v-model="entreprise.numero" required></v-text-field>
                 </v-col>
               </v-row>
               <!-- <v-btn
@@ -62,15 +62,15 @@
           </v-container>
         </v-card>
 
-        <v-btn color="primary" @click="e1 = 2">Continue</v-btn>
+        <v-btn color="primary" :disabled="!valid1" @click="nextCheck">Continue</v-btn>
 
-        <v-btn text>Cancel</v-btn>
+        <v-btn text @click="cancel">Cancel</v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="2">
         <v-card class="mb-12" color="grey lighten-1" height="45vh">
           <v-container>
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form ref="form" v-model="valid2" lazy-validation>
               <v-row>
                 <v-col cols="6" sm="8">
                   <v-text-field
@@ -82,6 +82,7 @@
                 </v-col>
                 <v-col cols="6" sm="8">
                   <v-text-field
+                  :rules="contactRoles"
                     v-model="entreprise.noms"
                     label="Nom de la personne de contact"
                     required
@@ -89,6 +90,7 @@
                 </v-col>
                 <v-col cols="6" sm="8">
                   <v-text-field
+                  :rules="numberRules"
                     label="Numero de la personne de contact"
                     v-model="entreprise.contact"
                     required
@@ -99,9 +101,9 @@
           </v-container>
         </v-card>
 
-        <v-btn color="primary" @click="validate">Valider</v-btn>
+        <v-btn color="primary" :disabled="!valid2" @click="validate">Valider</v-btn>
 
-        <v-btn text>Cancel</v-btn>
+        <v-btn text @click="preview">Preview</v-btn>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -114,7 +116,8 @@ export default {
 
   data: () => ({
     e1: 1,
-    valid: false,
+    valid1: false,
+    valid2: false,
     entreprise: {
       // nom: '',
       activite: '',
@@ -128,30 +131,67 @@ export default {
       tva: '',
       numero: '',
     },
-    nameRules: [
-      v => !!v || "Name is required",
-      v => (v && v.length <= 255) || "Name must be less than 10 characters",
+    tvaRules: [
+      v => !!v || "Tva is required",
+    ],
+    entrepriseRules: [
+      v => !!v || "Entreprise is required",
+      v => (v && v.length <= 255) || "Entreprise Name must be less than 255 characters",
+    ],
+    activiteRules: [
+      v => !!v || "Activite is required",
+      v => (v && v.length <= 255) || "Activite must be less than 255 characters",
+    ],
+    adresseRules: [
+      v => !!v || "Adresse is required",
+      v => (v && v.length <= 255) || "Adresse must be less than 255 characters",
+    ],
+    villeRules: [
+      v => !!v || "Ville is required",
+      v => (v && v.length <= 255) || "Ville must be less than 255 characters",
+    ],
+    paysRules: [
+      v => !!v || "Pays is required",
+      v => (v && v.length <= 255) || "Pays must be less than 255 characters",
+    ],
+    codeRules: [
+      v => !!v || "Code postal is required",
     ],
     email: "",
     emailRules: [
       v => !!v || "E-mail is required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
-    select: null,
-    items: [
-      "Item 1",
-      "Item 2",
-      "Item 3",
-      "Item 4",
-    ],
-
+  phoneRoles: [
+    v => !!v || "Numero is required",
+    v => (v && v.length <= 255) || "Numero must be less than 255 characters",
+  ],
+  contactRoles: [
+    v => !!v || "Personne de contact is required",
+    v => (v && v.length <= 255) || "Personne de contact must be less than 255 characters",
+  ],
+  numberRules: [
+    v => !!v || "Numero is required",
+    v => (v && v.length <= 255) || "Numero must be less than 255 characters",
+  ],
   }),
   methods: {
     tavCheck() {
       axios.get(`http://13.38.138.92/api/companies/${this.entreprise.tva}/info`).then(res => {
         this.entreprise = res.data.data
         console.log(res.data.data)
+        this.valid1 = true
       })
+    },
+    nextCheck() {
+      this.$refs.form.validate()
+      this.e1 = 2
+    },
+    cancel() {
+      this.$router.push('/')
+    },
+    preview() {
+      this.e1 = 1
     },
     validate() {
       this.$refs.form.validate();
@@ -167,7 +207,7 @@ export default {
       formdata.append('email_de_la_personne_de_contact', this.entreprise.email)
       formdata.append('nom_de_la_personne_de_contact', this.entreprise.noms)
       formdata.append('numero_de_la_personne_de_contact', this.entreprise.contact)
-    this.$store.dispatch('setEntreprise',formdata)
+      this.$store.dispatch('setEntreprise', formdata)
       this.$router.push('/dashboard')
     },
   },

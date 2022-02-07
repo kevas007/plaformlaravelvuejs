@@ -123,7 +123,7 @@ export default {
             isEditing: null,
             model: null,
             items: [
-                { title: 'Todos', icon: 'mdi-do', link: '/todos' },
+                { title: 'Todos', icon: 'mdi-rename-box', link: '/todos' },
                 { title: 'Messages', icon: 'mdi-mail', link: '/messages' },
             ],
         }

@@ -32,6 +32,7 @@
 <script>
 import axios from 'axios'
 // import Vue from 'vue'
+import { mapGetters } from 'vuex'
 export default {
     name: 'Register',
     data: () => ({
@@ -70,7 +71,8 @@ export default {
                         //     duration: 2000,
                         //     dismissible: true
                         // })
-                        this.$store.dispatch('userConnected',res.data)
+                        this.$store.dispatch('userConnected', res.data)
+                        this.$toast.info("Bienvenue " + this.getUsers.name);
                         rout.push('/dashboard');
                     }
                 })
@@ -84,6 +86,9 @@ export default {
 
                 });
         }
+    },
+    computed: {
+        ...mapGetters(['getUsers', 'getToken'])
     }
 };
 </script>

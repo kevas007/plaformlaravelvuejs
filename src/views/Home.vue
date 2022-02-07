@@ -1,11 +1,11 @@
 <template>
-<HelloWorld/>
+<Stepper/>
 </template>
 <script>
-import HelloWorld from "../components/HelloWorld.vue"
+import Stepper from "../components/Stepper.vue"
   export default {
 
-    components: { HelloWorld }
+    components: { Stepper }
 }
 
 </script>
